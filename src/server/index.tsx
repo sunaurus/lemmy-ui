@@ -1,5 +1,6 @@
 import { setupDateFns } from "@utils/app";
 import { getStaticDir } from "@utils/env";
+import compression from "compression";
 import express from "express";
 import path from "path";
 import process from "process";
@@ -11,7 +12,6 @@ import ServiceWorkerHandler from "./handlers/service-worker-handler";
 import ThemeHandler from "./handlers/theme-handler";
 import ThemesListHandler from "./handlers/themes-list-handler";
 import { setCacheControl, setDefaultCsp } from "./middleware";
-
 const server = express();
 
 const [hostname, port] = process.env["LEMMY_UI_HOST"]
@@ -19,6 +19,7 @@ const [hostname, port] = process.env["LEMMY_UI_HOST"]
   : ["0.0.0.0", "1234"];
 
 server.use(express.json());
+server.use(compression());
 server.use(express.urlencoded({ extended: false }));
 server.use(
   getStaticDir(),
